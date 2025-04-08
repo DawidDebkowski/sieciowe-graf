@@ -24,7 +24,11 @@ G_full = nx.Graph()
 G_full.add_nodes_from(range(NUM_NODES))
 
 # Aby żaden wierzchołek nie był izolowany, najpierw tworzymy drzewo rozpinające
-T = nx.generators.trees.random_tree(NUM_NODES, seed=42)
+random_weights = {(i, j): random.random() for i in range(NUM_NODES) for j in range(i + 1, NUM_NODES)}
+G_complete = nx.Graph()
+G_complete.add_nodes_from(range(NUM_NODES))
+G_complete.add_edges_from((u, v, {'weight': w}) for (u, v), w in random_weights.items())
+T = nx.minimum_spanning_tree(G_complete, algorithm="kruskal")
 G_full.add_edges_from(T.edges())
 
 # Dodajemy losowe krawędzie aż osiągniemy żądaną liczbę NUM_EDGES (<30)
