@@ -3,6 +3,7 @@ import random
 import numpy as np
 import networkx as nx
 from scapy.all import *  # Scapy – wykorzystywane jako przykładowy import narzędzi sieciowych
+import matplotlib.pyplot as plt
 
 # ------------------------
 # Parametry symulacji
