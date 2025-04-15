@@ -19,6 +19,9 @@ m = 1000  # średnia wielkość pakietu (w bitach)
 T_max = 0.5  # maksymalne dopuszczalne opóźnienie
 p = 0.95  # prawdopodobieństwo, że dana krawędź nie ulegnie uszkodzeniu
 
+T_SUM = 0
+SIM_AMOUNT = 0
+
 # Funkcja tworząca przykładowy graf wraz z atrybutami na krawędziach
 def create_graph():
     G = nx.Graph()
@@ -75,6 +78,7 @@ def compute_delay(graph, m):
 
 # Funkcja symulująca niezawodność sieci metodą Monte Carlo
 def simulate_reliability(G_full, p, T_max, m, iterations=10000):
+    global T_SUM, SIM_AMOUNT
     success = 0
     for _ in range(iterations):
         # Tworzymy podgraf – usuwamy krawędzie, które "zepsuły się"
@@ -88,6 +92,8 @@ def simulate_reliability(G_full, p, T_max, m, iterations=10000):
             continue
         # Obliczamy opóźnienie T dla działającego podgrafu
         T = compute_delay(G_oper, m)
+        T_SUM += T
+        SIM_AMOUNT += 1
         if T < T_max:
             success += 1
     return success / iterations
@@ -124,7 +130,9 @@ def main():
     # Symulacja niezawodności
     iterations = 10000
     reliability = simulate_reliability(G, p, T_max, m, iterations)
-    print(f"Oszacowana niezawodność sieci (prawdopodobieństwo, że T < T_max i sieć jest spójna): {reliability:.4f}")
+    print(f"Symulacje zakończone. Liczba udanych symulacji: {SIM_AMOUNT}.")
+    print(f"    Oszacowana niezawodność sieci (prawdopodobieństwo, że T < T_max i sieć jest spójna): {reliability:.4f}")
+    print(f"    Średnie T dla sprawdzonych grafów w Monte Carlo: {(T_SUM/SIM_AMOUNT):.4f}")
     
     # Rysujemy graf
     plot_graph(G)
