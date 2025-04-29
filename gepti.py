@@ -4,12 +4,9 @@ import matplotlib.pyplot as plt
 
 # ===================== STAŁE GLOBALNE =====================
 NUM_NODES    = 20          # liczba wierzchołków
-EXTRA_EDGES  = 5           # dodatkowych krawędzi obok cyklu (łącznie: cykl + EXTRA_EDGES < 30)
-CAPACITY_MIN = 40000       # minimalna przepustowość krawędzi [bit/s]
-CAPACITY_MAX = 70000      # maksymalna przepustowość krawędzi [bit/s]
-COST_MIN     = 1           # minimalny koszt krawędzi
-COST_MAX     = 10          # maksymalny koszt krawędzi
 PACKET_SIZE  = 1000        # średni rozmiar pakietu w bitach (m)
+CAPACITY_MIN = 300 * PACKET_SIZE       # minimalna przepustowość krawędzi [bit/s]
+CAPACITY_MAX = 500 * PACKET_SIZE      # maksymalna przepustowość krawędzi [bit/s]
 T_MAX        = 0.5         # maksymalne dopuszczalne opóźnienie (T_max)
 EDGE_RELIABILITY = 0.7   # prawdopodobieństwo, że krawędź działa
 FLOW_PROB    = 0.2         # prawdopodobieństwo, że między daną parą (i,j) jest ruch (wartość 1 pakiet/s)
@@ -26,28 +23,18 @@ def create_graph():
       - capacity: przepustowość (w bitach/s) z zakresu [CAPACITY_MIN, CAPACITY_MAX]
       - cost: koszt używany przy wyszukiwaniu ścieżki, losowany z zakresu [COST_MIN, COST_MAX]
     """
+
     G = nx.Graph()
     for i in range(NUM_NODES):
         G.add_node(i)
+
+    krawedzie = [(1, 2), (2, 3), (3, 4), (4, 1), (5, 6), (6, 7), (7, 8), (8, 5), (9, 10), (10, 11), (11, 12), (12, 9), (13, 14), (14, 15), (15, 16), (16, 13), (17, 18), (18, 19), (19, 0), (0, 17), (3, 17), (8, 17), (10, 19), (13, 19), (4, 0), (7, 18), (9, 0), (14, 18), (2, 5), (11,16)]
         
-    # Tworzymy cykl (zapewnia spójność podstawową)
-    for i in range(NUM_NODES):
-        u = i
-        v = (i + 1) % NUM_NODES
+    for k in krawedzie:
         cap = random.randint(CAPACITY_MIN, CAPACITY_MAX)
-        cost = random.randint(COST_MIN, COST_MAX)
-        G.add_edge(u, v, capacity=cap, cost=cost)
+        cost = 1
+        G.add_edge(k[0], k[1], capacity=cap, cost=cost)
     
-    # Dodajemy dodatkowe krawędzie
-    added = 0
-    while added < EXTRA_EDGES:
-        u = random.randint(0, NUM_NODES - 1)
-        v = random.randint(0, NUM_NODES - 1)
-        if u != v and not G.has_edge(u, v):
-            cap = random.randint(CAPACITY_MIN, CAPACITY_MAX)
-            cost = random.randint(COST_MIN, COST_MAX)
-            G.add_edge(u, v, capacity=cap, cost=cost)
-            added += 1
     return G
 
 def create_flow_matrix():
@@ -57,10 +44,19 @@ def create_flow_matrix():
     przydziela się ruch równy 1 pakiet/s, w przeciwnym razie 0.
     """
     N = {}
+    # for i in range(NUM_NODES):
+    #     for j in range(NUM_NODES):
+    #         if i != j:
+    #             N[(i, j)] = 1 if random.random() < FLOW_PROB else 0
+
     for i in range(NUM_NODES):
         for j in range(NUM_NODES):
-            if i != j:
-                N[(i, j)] = 1 if random.random() < FLOW_PROB else 0
+            if j < i:
+                N[(i, j)] = N[(j, i)]
+            elif j == i:
+                N[(i, j)] = 0
+            else:
+                N[(i, j)] = random.randint(1, 10)
     return N
 
 def compute_routing_flows(G, N):
@@ -115,8 +111,9 @@ def compute_delay(G, flow_on_edge, total_flow, m):
         key = tuple(sorted((u, v)))
         a_e = flow_on_edge[key]
         c_e = attr['capacity']
-        max_flow = c_e / m  # maksymalny ruch w pakietach/s
+        max_flow = c_e / PACKET_SIZE  # maksymalny ruch w pakietach/s
         if a_e >= max_flow:
+            print(f"{u} {v} {a_e} {c_e / PACKET_SIZE} zle???")
             return float('inf')
         delay_sum += a_e / (max_flow - a_e)
     return delay_sum / total_flow
@@ -182,12 +179,13 @@ def plot_graph(G, flow_on_edge):
     for u, v, attr in G.edges(data=True):
         key = tuple(sorted((u, v)))
         flow_val = flow_on_edge.get(key, 0)
-        label = f"flow: {flow_val}\nc: {attr['capacity']}"
+        label = f"przepływ: {flow_val}\nprzepustowość: {attr['capacity'] // PACKET_SIZE}\n"
         edge_labels[(u, v)] = label
     nx.draw_networkx_edges(G, pos, width=2)
     nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=8)
     plt.title("Topologia sieci (dynamiczne przepływy)")
     plt.axis("off")
+    plt.tight_layout()
     plt.show()
 
 def main():
