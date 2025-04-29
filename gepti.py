@@ -5,10 +5,10 @@ import matplotlib.pyplot as plt
 # ===================== STAŁE GLOBALNE =====================
 NUM_NODES    = 20          # liczba wierzchołków
 PACKET_SIZE  = 1000        # średni rozmiar pakietu w bitach (m)
-CAPACITY_MIN = 300 * PACKET_SIZE       # minimalna przepustowość krawędzi [bit/s]
-CAPACITY_MAX = 500 * PACKET_SIZE      # maksymalna przepustowość krawędzi [bit/s]
-T_MAX        = 0.5         # maksymalne dopuszczalne opóźnienie (T_max)
-EDGE_RELIABILITY = 0.7   # prawdopodobieństwo, że krawędź działa
+CAPACITY_MIN = 600 * PACKET_SIZE       # minimalna przepustowość krawędzi [bit/s]
+CAPACITY_MAX = 800 * PACKET_SIZE      # maksymalna przepustowość krawędzi [bit/s]
+T_MAX        = 0.01       # maksymalne dopuszczalne opóźnienie (T_max)
+EDGE_RELIABILITY = 0.95   # prawdopodobieństwo, że krawędź działa
 FLOW_PROB    = 0.2         # prawdopodobieństwo, że między daną parą (i,j) jest ruch (wartość 1 pakiet/s)
 MC_ITER      = 1000        # liczba iteracji Monte Carlo do symulacji niezawodności
 # ============================================================
@@ -28,10 +28,17 @@ def create_graph():
     for i in range(NUM_NODES):
         G.add_node(i)
 
-    krawedzie = [(1, 2), (2, 3), (3, 4), (4, 1), (5, 6), (6, 7), (7, 8), (8, 5), (9, 10), (10, 11), (11, 12), (12, 9), (13, 14), (14, 15), (15, 16), (16, 13), (17, 18), (18, 19), (19, 0), (0, 17), (3, 17), (8, 17), (10, 19), (13, 19), (4, 0), (7, 18), (9, 0), (14, 18), (2, 5), (11,16)]
+    krawedzie = [(1, 2, 0), (2, 3, 0), (3, 4, 0), (4, 1, 0), (5, 6, 0), (6, 7, 0), (7, 8, 0), 
+                 (8, 5, 0), (9, 10, 0), (10, 11, 0), (11, 12, 0), (12, 9, 0), (13, 14, 0), (14, 15, 0), 
+                 (15, 16, 0), (16, 13, 0), (17, 18, 1000), (18, 19, 950), (19, 0, 1400), (0, 17, 1000), (3, 17, 0), (8, 17, 0), 
+                 (10, 19, 0), (13, 19, 0), (4, 0, 0), (7, 18, 0), (9, 0, 0), (14, 18, 0), (2, 5, 0), (11,16, 0)]
         
     for k in krawedzie:
-        cap = random.randint(CAPACITY_MIN, CAPACITY_MAX)
+        if k[2] == 0:
+            cap = random.randint(CAPACITY_MIN, CAPACITY_MAX)
+        else:
+            cap = random.randint(CAPACITY_MIN, CAPACITY_MAX)
+            # cap = k[2] * PACKET_SIZE
         cost = 1
         G.add_edge(k[0], k[1], capacity=cap, cost=cost)
     
@@ -113,15 +120,14 @@ def compute_delay(G, flow_on_edge, total_flow, m):
         c_e = attr['capacity']
         max_flow = c_e / PACKET_SIZE  # maksymalny ruch w pakietach/s
         if a_e >= max_flow:
-            print(f"{u} {v} {a_e} {c_e / PACKET_SIZE} zle???")
+            # print(f"{u} {v} {a_e} {c_e / PACKET_SIZE} zle???")
             return float('inf')
         delay_sum += a_e / (max_flow - a_e)
     return delay_sum / total_flow
 
-COUNT = 0
-
+FUN_GRAPH_MAX = 0
+FUN_GRAPH_G = 0
 def simulate_reliability(G_full, N, p, T_max, m, iterations=MC_ITER):
-    global COUNT
     """
     Symuluje niezawodność sieci metodą Monte Carlo.
     Dla każdej iteracji:
@@ -152,9 +158,7 @@ def simulate_reliability(G_full, N, p, T_max, m, iterations=MC_ITER):
         if flows is None:
             continue
         if not ok:
-            COUNT+=1
-            if(COUNT < 10):
-                plot_graph(G_oper, flows)
+            plot_graph(G_oper, flows)
             continue
         T = compute_delay(G_oper, flows, total_flow, m)
         valid_iterations += 1
@@ -162,6 +166,7 @@ def simulate_reliability(G_full, N, p, T_max, m, iterations=MC_ITER):
             success += 1
     if valid_iterations == 0:
         return 0
+    print(f"sukcesy {success}, {valid_iterations}")
     return success / valid_iterations
 
 def plot_graph(G, flow_on_edge):
@@ -207,7 +212,7 @@ def main():
     print(f"Zagregowany ruch (suma n(i,j)): {total_flow}")
     print(f"Opóźnienie T w pełnym grafie: {T_full:.4f}")
     
-    # Symulacja niezawodności (Monte Carlo)
+    # # Symulacja niezawodności (Monte Carlo)
     reliability = simulate_reliability(G, N, EDGE_RELIABILITY, T_MAX, PACKET_SIZE, iterations=MC_ITER)
     print(f"Oszacowana niezawodność sieci (T < T_MAX): {reliability:.4f}")
     
