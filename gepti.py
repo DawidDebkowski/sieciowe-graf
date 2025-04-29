@@ -126,8 +126,10 @@ def compute_delay(G, flow_on_edge, total_flow, m):
     return delay_sum / total_flow
 
 FUN_GRAPH_MAX = 0
+FUN_FLOWS = 0
 FUN_GRAPH_G = 0
 def simulate_reliability(G_full, N, p, T_max, m, iterations=MC_ITER):
+    global FUN_GRAPH_G, FUN_GRAPH_MAX, FUN_FLOWS
     """
     Symuluje niezawodność sieci metodą Monte Carlo.
     Dla każdej iteracji:
@@ -163,10 +165,14 @@ def simulate_reliability(G_full, N, p, T_max, m, iterations=MC_ITER):
         T = compute_delay(G_oper, flows, total_flow, m)
         valid_iterations += 1
         if T < T_max:
+            if FUN_GRAPH_MAX < T:
+                FUN_GRAPH_MAX = T
+                FUN_GRAPH_G = G_oper
+                FUN_FLOWS = flows
             success += 1
     if valid_iterations == 0:
         return 0
-    print(f"sukcesy {success}, {valid_iterations}")
+    # print(f"sukcesy {success}, {valid_iterations}")
     return success / valid_iterations
 
 def plot_graph(G, flow_on_edge):
@@ -216,8 +222,39 @@ def main():
     reliability = simulate_reliability(G, N, EDGE_RELIABILITY, T_MAX, PACKET_SIZE, iterations=MC_ITER)
     print(f"Oszacowana niezawodność sieci (T < T_MAX): {reliability:.4f}")
     
-    # Rysujemy graf z dynamicznie wyliczonymi przepływami (baseline)
     plot_graph(G, flows)
+
+    print(f"Najwieksze T < T_MAX: {FUN_GRAPH_MAX:.4f}")
+    plot_graph(FUN_GRAPH_G, FUN_FLOWS)
+    # Rysujemy graf z dynamicznie wyliczonymi przepływami (baseline)
+
+    print("\nSprawdzenie większej macierzy natężeń:")
+    for t in range(10):
+        for i in range(NUM_NODES):
+            for j in range(NUM_NODES):
+                N[(i, j)] += 1
+                if j == i:
+                    N[(i, j)] = 0
+        
+        reliability = simulate_reliability(G, N, EDGE_RELIABILITY, T_MAX, PACKET_SIZE, iterations=MC_ITER)
+        print(f"i = {t}: Oszacowana niezawodność sieci (T < T_MAX): {reliability:.4f}")
+
+    for i in range(NUM_NODES):
+            for j in range(NUM_NODES):
+                N[(i, j)] -= 10
+                if j == i:
+                    N[(i, j)] = 0
+    
+    print("\nSprawdzenie większych przepustowości:")
+    global CAPACITY_MAX, CAPACITY_MIN
+    for t in range(10):
+        CAPACITY_MIN *= 1.05
+        CAPACITY_MAX *= 1.05
+
+        G = create_graph()
+        reliability = simulate_reliability(G, N, EDGE_RELIABILITY, T_MAX, PACKET_SIZE, iterations=MC_ITER)
+        print(f"i = {t}: Oszacowana niezawodność sieci (T < T_MAX): {reliability:.4f}")
+
 
 if __name__ == '__main__':
     main()
