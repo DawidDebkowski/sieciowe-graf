@@ -218,14 +218,14 @@ def main():
     print(f"Zagregowany ruch (suma n(i,j)): {total_flow}")
     print(f"Opóźnienie T w pełnym grafie: {T_full:.4f}")
     
-    # # Symulacja niezawodności (Monte Carlo)
-    # reliability = simulate_reliability(G, N, EDGE_RELIABILITY, T_MAX, PACKET_SIZE, iterations=MC_ITER)
-    # print(f"Oszacowana niezawodność sieci (T < T_MAX): {reliability:.4f}")
+    # Symulacja niezawodności (Monte Carlo)
+    reliability = simulate_reliability(G, N, EDGE_RELIABILITY, T_MAX, PACKET_SIZE, iterations=MC_ITER)
+    print(f"Oszacowana niezawodność sieci (T < T_MAX): {reliability:.4f}")
     
-    # plot_graph(G, flows)
+    plot_graph(G, flows)
 
-    # print(f"Najwieksze T < T_MAX: {FUN_GRAPH_MAX:.4f}")
-    # plot_graph(FUN_GRAPH_G, FUN_FLOWS)
+    print(f"Najwieksze T < T_MAX: {FUN_GRAPH_MAX:.4f}")
+    plot_graph(FUN_GRAPH_G, FUN_FLOWS)
     # Rysujemy graf z dynamicznie wyliczonymi przepływami (baseline)
 
     print("\nWykres niezawodności w zależności od macierzy natężeń:")
@@ -288,6 +288,14 @@ def main():
     plt.legend()
     plt.savefig("przepustowosc.png")
 
+    CAPACITY_MIN = 600 * PACKET_SIZE
+    CAPACITY_MAX = 800 * PACKET_SIZE
+
+    G = create_graph()
+    for i in range(10):
+        cap = random.randint(CAPACITY_MIN, CAPACITY_MAX)
+        G.add_edge(random.randint(0, 19), random.randint(0, 19), capacity=cap, cost=1)
+        reliability = simulate_reliability(G, N, EDGE_RELIABILITY, T_MAX, PACKET_SIZE, iterations=MC_ITER)
 
 if __name__ == '__main__':
     main()
