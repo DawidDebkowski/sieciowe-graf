@@ -58,9 +58,9 @@ def create_flow_matrix():
 
     for i in range(NUM_NODES):
         for j in range(NUM_NODES):
-            if j < i:
-                N[(i, j)] = N[(j, i)]
-            elif j == i:
+            # if j < i:
+            #     N[(i, j)] = N[(j, i)]
+            if j == i:
                 N[(i, j)] = 0
             else:
                 N[(i, j)] = random.randint(1, 10)
@@ -226,7 +226,6 @@ def main():
 
     print(f"Najwieksze T < T_MAX: {FUN_GRAPH_MAX:.4f}")
     plot_graph(FUN_GRAPH_G, FUN_FLOWS)
-    # Rysujemy graf z dynamicznie wyliczonymi przepływami (baseline)
 
     print("\nWykres niezawodności w zależności od macierzy natężeń:")
     reliability_values = []
