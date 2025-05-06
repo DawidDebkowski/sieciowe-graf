@@ -1,3 +1,6 @@
+import random
+
+
 def tranlate_to_binaries(message):
     """
     Translates a message to binary format.
@@ -227,7 +230,6 @@ def simulate_transmission_error(message, error_rate=0.001):
     Simulates transmission errors by flipping random bits with probability error_rate.
     Used for testing the CRC error detection.
     """
-    import random
     result = list(message)
     for i in range(len(result)):
         if random.random() < error_rate:
