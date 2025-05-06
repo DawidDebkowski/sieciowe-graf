@@ -292,10 +292,27 @@ def main():
     CAPACITY_MAX = 800 * PACKET_SIZE
 
     G = create_graph()
+    added_edges = []
+    reliability_values = []
+
     for i in range(10):
         cap = random.randint(CAPACITY_MIN, CAPACITY_MAX)
         G.add_edge(random.randint(0, 19), random.randint(0, 19), capacity=cap, cost=1)
         reliability = simulate_reliability(G, N, EDGE_RELIABILITY, T_MAX, PACKET_SIZE, iterations=MC_ITER)
+        added_edges.append(i + 1)
+        reliability_values.append(reliability)
+        print(f"Liczba dodanych krawędzi: {i + 1}, Niezawodność: {reliability:.4f}")
 
+    # Tworzenie wykresu
+    plt.plot(added_edges, reliability_values, marker='o', label="Niezawodność")
+    plt.xlabel("Liczba dodanych krawędzi")
+    plt.ylabel("Niezawodność sieci (T < T_MAX)")
+    plt.title("Niezawodność sieci w zależności od liczby dodanych krawędzi")
+    plt.grid(True)
+    plt.legend()
+    plt.savefig("dodane_krawedzie.png")
+
+    plot_graph(G, flows)
+    
 if __name__ == '__main__':
     main()
