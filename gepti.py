@@ -232,7 +232,9 @@ def main():
     reliability_values = []
     flow_scaling = []
 
-    for t in range(10):
+    TEST_SIZE = 11
+
+    for t in range(TEST_SIZE):
         for i in range(NUM_NODES):
             for j in range(NUM_NODES):
                 N[(i, j)] += 0.2
@@ -257,7 +259,7 @@ def main():
 
     for i in range(NUM_NODES):
             for j in range(NUM_NODES):
-                N[(i, j)] -= 2
+                N[(i, j)] -= 0.2 * TEST_SIZE
                 if j == i:
                     N[(i, j)] = 0
     
@@ -267,7 +269,7 @@ def main():
     reliability_values = []
     capacity_scaling = []
 
-    for t in range(10):
+    for t in range(TEST_SIZE):
         CAPACITY_MIN = int(CAPACITY_MIN * 1.05)
         CAPACITY_MAX = int(CAPACITY_MAX * 1.05)
 
@@ -295,7 +297,7 @@ def main():
     added_edges = []
     reliability_values = []
 
-    for i in range(10):
+    for i in range(TEST_SIZE):
         cap = random.randint(CAPACITY_MIN, CAPACITY_MAX)
         G.add_edge(random.randint(0, 19), random.randint(0, 19), capacity=cap, cost=1)
         reliability = simulate_reliability(G, N, EDGE_RELIABILITY, T_MAX, PACKET_SIZE, iterations=MC_ITER)
@@ -304,6 +306,7 @@ def main():
         print(f"Liczba dodanych krawędzi: {i + 1}, Niezawodność: {reliability:.4f}")
 
     # Tworzenie wykresu
+    plt.figure(figsize=(10, 6))
     plt.plot(added_edges, reliability_values, marker='o', label="Niezawodność")
     plt.xlabel("Liczba dodanych krawędzi")
     plt.ylabel("Niezawodność sieci (T < T_MAX)")
@@ -313,6 +316,6 @@ def main():
     plt.savefig("dodane_krawedzie.png")
 
     plot_graph(G, flows)
-    
+
 if __name__ == '__main__':
     main()
