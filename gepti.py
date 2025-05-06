@@ -8,7 +8,7 @@ PACKET_SIZE  = 1000        # średni rozmiar pakietu w bitach (m)
 CAPACITY_MIN = 600 * PACKET_SIZE       # minimalna przepustowość krawędzi [bit/s]
 CAPACITY_MAX = 800 * PACKET_SIZE      # maksymalna przepustowość krawędzi [bit/s]
 T_MAX        = 0.01       # maksymalne dopuszczalne opóźnienie (T_max)
-EDGE_RELIABILITY = 0.95   # prawdopodobieństwo, że krawędź działa
+EDGE_RELIABILITY = 0.94   # prawdopodobieństwo, że krawędź działa
 FLOW_PROB    = 0.2         # prawdopodobieństwo, że między daną parą (i,j) jest ruch (wartość 1 pakiet/s)
 MC_ITER      = 1000        # liczba iteracji Monte Carlo do symulacji niezawodności
 # ============================================================
@@ -219,41 +219,74 @@ def main():
     print(f"Opóźnienie T w pełnym grafie: {T_full:.4f}")
     
     # # Symulacja niezawodności (Monte Carlo)
-    reliability = simulate_reliability(G, N, EDGE_RELIABILITY, T_MAX, PACKET_SIZE, iterations=MC_ITER)
-    print(f"Oszacowana niezawodność sieci (T < T_MAX): {reliability:.4f}")
+    # reliability = simulate_reliability(G, N, EDGE_RELIABILITY, T_MAX, PACKET_SIZE, iterations=MC_ITER)
+    # print(f"Oszacowana niezawodność sieci (T < T_MAX): {reliability:.4f}")
     
-    plot_graph(G, flows)
+    # plot_graph(G, flows)
 
-    print(f"Najwieksze T < T_MAX: {FUN_GRAPH_MAX:.4f}")
-    plot_graph(FUN_GRAPH_G, FUN_FLOWS)
+    # print(f"Najwieksze T < T_MAX: {FUN_GRAPH_MAX:.4f}")
+    # plot_graph(FUN_GRAPH_G, FUN_FLOWS)
     # Rysujemy graf z dynamicznie wyliczonymi przepływami (baseline)
 
-    print("\nSprawdzenie większej macierzy natężeń:")
+    print("\nWykres niezawodności w zależności od macierzy natężeń:")
+    reliability_values = []
+    flow_scaling = []
+
     for t in range(10):
         for i in range(NUM_NODES):
             for j in range(NUM_NODES):
-                N[(i, j)] += 1
+                N[(i, j)] += 0.2
                 if j == i:
                     N[(i, j)] = 0
-        
+
         reliability = simulate_reliability(G, N, EDGE_RELIABILITY, T_MAX, PACKET_SIZE, iterations=MC_ITER)
+        reliability_values.append(reliability)
+        flow_scaling.append(t + 1)
+
         print(f"i = {t}: Oszacowana niezawodność sieci (T < T_MAX): {reliability:.4f}")
+
+    # Tworzenie wykresu
+    plt.figure(figsize=(10, 6))
+    plt.plot(flow_scaling, reliability_values, marker='o', label="Niezawodność")
+    plt.xlabel("Skalowanie macierzy natężeń (względne)")
+    plt.ylabel("Niezawodność sieci (T < T_MAX)")
+    plt.title("Niezawodność sieci w zależności od macierzy natężeń")
+    plt.grid(True)
+    plt.legend()
+    plt.savefig("macierz_natezen.png")
 
     for i in range(NUM_NODES):
             for j in range(NUM_NODES):
-                N[(i, j)] -= 10
+                N[(i, j)] -= 2
                 if j == i:
                     N[(i, j)] = 0
     
-    print("\nSprawdzenie większych przepustowości:")
+    print("\nWykres niezawodności w zależności od przepustowości:")
+
     global CAPACITY_MAX, CAPACITY_MIN
+    reliability_values = []
+    capacity_scaling = []
+
     for t in range(10):
-        CAPACITY_MIN *= 1.05
-        CAPACITY_MAX *= 1.05
+        CAPACITY_MIN = int(CAPACITY_MIN * 1.05)
+        CAPACITY_MAX = int(CAPACITY_MAX * 1.05)
 
         G = create_graph()
         reliability = simulate_reliability(G, N, EDGE_RELIABILITY, T_MAX, PACKET_SIZE, iterations=MC_ITER)
+        reliability_values.append(reliability)
+        capacity_scaling.append(1.05 ** (t + 1))
+
         print(f"i = {t}: Oszacowana niezawodność sieci (T < T_MAX): {reliability:.4f}")
+
+    # Tworzenie wykresu
+    plt.figure(figsize=(10, 6))
+    plt.plot(capacity_scaling, reliability_values, marker='o', label="Niezawodność")
+    plt.xlabel("Skalowanie przepustowości (względne)")
+    plt.ylabel("Niezawodność sieci (T < T_MAX)")
+    plt.title("Niezawodność sieci w zależności od przepustowości")
+    plt.grid(True)
+    plt.legend()
+    plt.savefig("przepustowosc.png")
 
 
 if __name__ == '__main__':
