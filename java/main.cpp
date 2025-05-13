@@ -9,6 +9,7 @@ const int CABLE_SIZE = 20;
 const int PC_NUMBER = 3;
 
 const char EMPTY_SYMBOL = '-';
+const char ERROR_SYMBOL = '#';
 
 struct cablePart {
     bool changed;
@@ -54,6 +55,7 @@ int main() {
     printCable();
 
     cable[1].symbol = 'A';
+    cable[19].symbol = 'B';
     for (int second = 0; second < TIME; second++) {
         this_thread::sleep_for(chrono::seconds(1));
 
@@ -62,15 +64,25 @@ int main() {
         }
 
         for (int i = 0; i < CABLE_SIZE; i++) {
-            if (i != 0 && cable[i-1].symbol != EMPTY_SYMBOL && !cable[i-1].changed) {
-                cable[i].symbol = cable[i-1].symbol;
+            if (cable[i-1].symbol != EMPTY_SYMBOL && cable[i+1].symbol != EMPTY_SYMBOL && cable[i-1].symbol != cable[i+1].symbol) {
+                cable[i].symbol = ERROR_SYMBOL;
                 cable[i].changed = true;
             }
 
-            if (i != CABLE_SIZE - 1 && cable[i+1].symbol != EMPTY_SYMBOL && !cable[i+1].changed) {
-                if (cable[i].changed) cable[i].symbol = '#';
-                else cable[i].symbol = cable[i+1].symbol;
-                cable[i].changed = true;
+            if (cable[i].symbol == ERROR_SYMBOL && !cable[i].changed) {
+                try {
+                    cable[i-1] = {true, ERROR_SYMBOL};
+                } catch (exception e) {}
+                try {
+                    cable[i+1] = {true, ERROR_SYMBOL};
+                } catch (exception e) {}
+            } else if (cable[i].symbol != EMPTY_SYMBOL && !cable[i].changed) {
+                try {
+                    cable[i-1] = {true, cable[i].symbol};
+                } catch (exception e) {}
+                try {
+                    cable[i+1] = {true, cable[i].symbol};
+                } catch (exception e) {}
             }
         }
 
