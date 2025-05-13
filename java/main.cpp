@@ -57,7 +57,22 @@ int main() {
     for (int second = 0; second < TIME; second++) {
         this_thread::sleep_for(chrono::seconds(1));
 
+        for (int i = 0; i < CABLE_SIZE; i++) {
+            cable[i].changed = false;
+        }
 
+        for (int i = 0; i < CABLE_SIZE; i++) {
+            if (i != 0 && cable[i-1].symbol != EMPTY_SYMBOL && !cable[i-1].changed) {
+                cable[i].symbol = cable[i-1].symbol;
+                cable[i].changed = true;
+            }
+
+            if (i != CABLE_SIZE - 1 && cable[i+1].symbol != EMPTY_SYMBOL && !cable[i+1].changed) {
+                if (cable[i].changed) cable[i].symbol = '#';
+                else cable[i].symbol = cable[i+1].symbol;
+                cable[i].changed = true;
+            }
+        }
 
         printCable();
     }
