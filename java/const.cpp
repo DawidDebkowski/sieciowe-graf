@@ -1,11 +1,13 @@
 #ifndef CONST
 #define CONST
 
+#include <vector>
+
 const int CABLE_SIZE = 20;
 const int PC_NUMBER = 3;
 
 const char EMPTY_SYMBOL = '-';
-const char CONFLICT_SYMBOl = '#';
+const char CONFLICT_SYMBOL = '#';
 
 struct cablePart {
     bool right_propagatoin;
@@ -17,14 +19,27 @@ struct cablePart {
 
 struct computer {
     int id;
+    int position;
     char symbol;
+    int timer = -1;
 };
 
 cablePart cable[CABLE_SIZE];
-computer computers[CABLE_SIZE];
-
-int matrix[PC_NUMBER] = {1, 2, 1};
+computer computers[PC_NUMBER];
 
 const int TIME = 30;
+
+struct signal {
+    int computer;
+    int time;
+    int size;
+};
+
+// int matrix[PC_NUMBER][TIME] = { {1, 2, 1} };
+vector<signal> matrix;
+
+void createMatrix() {
+    matrix.push_back(1, 2, 1);
+}
 
 #endif

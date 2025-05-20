@@ -3,23 +3,28 @@
 
 #include "const.cpp"
 
-void computerBehaviour() {
-    for (int i = 0; i < CABLE_SIZE; i++) {
-        if (computers[i].id != -1) {
-            int id = computers[i].id;
-            if (matrix[id] > 0) {
-                int j = i + 1;
-                while (j < CABLE_SIZE && cable[j].symbol != EMPTY_SYMBOL) {
-                    j++;
-                }
-                if (j < CABLE_SIZE) {
-                    cable[j].changed = true;
-                    cable[j].symbol = computers[i].symbol;
-                    matrix[id]--;
-                }
+void sendSignal(computer c) {
+    cable[c.position].symbol = c.symbol;
+    cable[c.position].left_propagatoin = true;
+    cable[c.position].right_propagatoin = true;
+}
+
+void computerBehaviour(int time) {
+    for(int i=0;i<PC_NUMBER;i++) {
+        for (signal s : matrix) {
+            if (s.computer == i && s.time == time) {
+                sendSignal(computers[i]);
             }
         }
     }
 }
-
+// csmacd
+// if(cable[computers[i].id].symbol == CONFLICT_SYMBOL) {
+//     // losujemy czekanie
+//     // przestajemy nadawac
+//     // robimy jam behaviour
+// }
+// if(computers[i].timer > 0) {
+//             computers[i].timer--;
+//         } else if( == 0)
 #endif

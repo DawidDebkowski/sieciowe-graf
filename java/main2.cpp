@@ -11,8 +11,8 @@ using namespace std;
 
 int main() {
     initCable();
-    computers[1] = {0, 'A'};
-    computers[19] = {1, 'B'};
+    computers[1] = {0, 1, 'A'};
+    computers[19] = {1, 19, 'B'};
     printCable();
 
     cable[19].symbol = 'B';
@@ -24,7 +24,7 @@ int main() {
         this_thread::sleep_for(chrono::milliseconds(150));
 
         cablePropagation();
-        computerBehaviour();
+        computerBehaviour(second);
         printCable();
     }
 
