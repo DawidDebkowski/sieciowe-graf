@@ -2,14 +2,14 @@
 #define CABLE
 
 #include "const.cpp"
-#include "iostream"
+// #include "iostream"
 
 using namespace std;
 
 void initCable() {
     for(int i=0;i<CABLE_SIZE;i++) {
         cable[i] = {false, false, false, false, EMPTY_SYMBOL};
-        computers[i] = {-1, ' '};
+        // computers[i] = {-1, ' '};
     }
 }
 

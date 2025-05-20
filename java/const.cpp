@@ -1,7 +1,9 @@
 #ifndef CONST
 #define CONST
 
-#include <vector>
+#include <bits/stdc++.h>
+
+using namespace std;
 
 const int CABLE_SIZE = 20;
 const int PC_NUMBER = 3;
@@ -29,17 +31,18 @@ computer computers[PC_NUMBER];
 
 const int TIME = 30;
 
-struct signal {
+struct Signal {
     int computer;
     int time;
     int size;
 };
 
 // int matrix[PC_NUMBER][TIME] = { {1, 2, 1} };
-vector<signal> matrix;
+vector<Signal> matrix;
 
 void createMatrix() {
-    matrix.push_back(1, 2, 1);
+    matrix.push_back(Signal{0, 0, 1});
+    matrix.push_back(Signal{1, 2, 1});
 }
 
 #endif
