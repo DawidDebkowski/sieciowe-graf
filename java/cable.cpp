@@ -42,30 +42,29 @@ void cablePropagation() {
         if (cable[i].symbol != EMPTY_SYMBOL) {
             if(cable[i].left_propagatoin && i > 0){
                 if(cable[i-1].symbol != EMPTY_SYMBOL && cable[i-1].right_propagatoin) {
-                    newCable[i-1].symbol = CONFLICT_SYMBOl;
+                    newCable[i-1].symbol = CONFLICT_SYMBOL;
                     newCable[i-1].changed = true;
                     newCable[i-1].left_propagatoin = true;
                     newCable[i-1].distorted = true;
                 } else {
                     if(newCable[i-1].symbol != EMPTY_SYMBOL) {
-                        newCable[i-1].symbol = CONFLICT_SYMBOl;
+                        newCable[i-1].symbol = CONFLICT_SYMBOL;
                     } else {
                         newCable[i-1].symbol = cable[i].symbol;
                     }
-                    newCable[i-1].symbol = cable[i].symbol;
                     newCable[i-1].left_propagatoin = true;
                     newCable[i-1].changed = true;
                 }
             }
             if(cable[i].right_propagatoin && i < CABLE_SIZE - 1){
                 if(cable[i+1].symbol != EMPTY_SYMBOL && cable[i+1].left_propagatoin) {
-                    newCable[i+1].symbol = CONFLICT_SYMBOl;
+                    newCable[i+1].symbol = CONFLICT_SYMBOL;
                     newCable[i+1].changed = true;
                     newCable[i+1].right_propagatoin = true;
                     newCable[i+1].distorted = true;
                 } else {
                     if(newCable[i+1].symbol != EMPTY_SYMBOL) {
-                        newCable[i+1].symbol = CONFLICT_SYMBOl;
+                        newCable[i+1].symbol = CONFLICT_SYMBOL;
                     } else {
                         newCable[i+1].symbol = cable[i].symbol;
                     }
