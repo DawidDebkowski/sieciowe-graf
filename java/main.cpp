@@ -9,11 +9,7 @@ const int CABLE_SIZE = 20;
 const int PC_NUMBER = 3;
 
 const char EMPTY_SYMBOL = '-';
-<<<<<<< HEAD
-const char ERROR_SYMBOL = '#';
-=======
 const char CONFLICT_SYMBOl = '#';
->>>>>>> 6665fe0ea964cb3407a0a4e1b4f5f75e83026b92
 
 struct cablePart {
     bool changed;
