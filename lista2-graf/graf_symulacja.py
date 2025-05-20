@@ -118,11 +118,11 @@ def compute_delay(G, flow_on_edge, total_flow, m):
         key = tuple(sorted((u, v)))
         a_e = flow_on_edge[key]
         c_e = attr['capacity']
-        max_flow = c_e / PACKET_SIZE  # maksymalny ruch w pakietach/s
-        if a_e >= max_flow:
+        capacity_in_packets = c_e / PACKET_SIZE  # maksymalny ruch w pakietach/s
+        if a_e >= capacity_in_packets:
             # print(f"{u} {v} {a_e} {c_e / PACKET_SIZE} zle???")
             return float('inf')
-        delay_sum += a_e / (max_flow - a_e)
+        delay_sum += a_e / (capacity_in_packets - a_e)
     return delay_sum / total_flow
 
 FUN_GRAPH_MAX = 0
