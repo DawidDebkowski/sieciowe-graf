@@ -15,9 +15,13 @@ int main() {
     computers[19] = {1, 'B'};
     printCable();
 
-    cable[1].symbol = 'A';
+    cable[19].symbol = 'B';
+    cable[19].left_propagatoin = true;
+    cable[19].changed = true;
+    cable[19].right_propagatoin = true;
+
     for (int second = 0; second < TIME; second++) {
-        this_thread::sleep_for(chrono::seconds(1));
+        this_thread::sleep_for(chrono::milliseconds(150));
 
         cablePropagation();
         computerBehaviour();
