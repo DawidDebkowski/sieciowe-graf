@@ -17,6 +17,7 @@ int main() {
     createPrintableComputers();
     initSavefile("./test.txt");
     printCable();
+    saveCable();
 
     // cable[2].left_propagation = true;
     // cable[2].symbol = 'A';
@@ -34,7 +35,9 @@ int main() {
         cablePropagation();
         computerBehaviour(second);
         printCable();
+        saveCable();
     }
 
+    saveFile.close();
     return 0;
 }

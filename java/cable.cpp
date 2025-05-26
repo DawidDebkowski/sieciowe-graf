@@ -49,13 +49,27 @@ void createPrintableComputers() {
 void initSavefile(string filepath) {
     saveFile = ofstream(filepath);
     if (saveFile.is_open()) {
-        saveFile << "abc";
-        saveFile.close();
+        for(int i=0;i<CABLE_SIZE;i++) {
+            saveFile << printableComputers[i].symbol;
+        }
+        saveFile << endl;
+        for(int i=0;i<CABLE_SIZE;i++) {
+            if(printableComputers[i].symbol != ' ') {
+                saveFile << '|';
+            } else saveFile << ' ';
+        }
+        saveFile << endl;
+    } else {
+        printf("savefile cannot be opened");
+        exit(1);
     }
 }
 
 void saveCable() {
-
+    for(int i=0;i<CABLE_SIZE;i++) {
+        saveFile << cable[i].symbol;
+    }
+    saveFile << endl;
 }
 
 void cablePropagation() {
