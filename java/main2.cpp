@@ -15,6 +15,7 @@ int main() {
     computers[1] = {1, 19, 'B'};
     printCable();
     createMatrix();
+    initSavefile("./test.txt");
 
     // cable[2].left_propagatoin = true;
     // cable[2].symbol = 'A';

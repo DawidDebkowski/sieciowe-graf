@@ -6,6 +6,8 @@
 
 using namespace std;
 
+ofstream saveFile;
+
 void initCable() {
     for(int i=0;i<CABLE_SIZE;i++) {
         cable[i] = {false, false, false, false, EMPTY_SYMBOL};
@@ -31,6 +33,18 @@ void printCable() {
         cout << computers[i].symbol;
     }
     cout << endl;
+}
+
+void initSavefile(string filepath) {
+    saveFile = ofstream(filepath);
+    if (saveFile.is_open()) {
+        saveFile << "abc";
+        saveFile.close();
+    }
+}
+
+void saveCable() {
+
 }
 
 void cablePropagation() {

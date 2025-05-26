@@ -76,16 +76,16 @@ int main() {
 
         for (int i = 0; i < CABLE_SIZE; i++) {
             if (cable[i-1].symbol != EMPTY_SYMBOL && cable[i+1].symbol != EMPTY_SYMBOL && cable[i-1].symbol != cable[i+1].symbol) {
-                cable[i].symbol = ERROR_SYMBOL;
+                cable[i].symbol = CONFLICT_SYMBOl;
                 cable[i].changed = true;
             }
 
-            if (cable[i].symbol == ERROR_SYMBOL && !cable[i].changed) {
+            if (cable[i].symbol == CONFLICT_SYMBOl && !cable[i].changed) {
                 try {
-                    cable[i-1] = {true, ERROR_SYMBOL};
+                    cable[i-1] = {true, CONFLICT_SYMBOl};
                 } catch (exception e) {}
                 try {
-                    cable[i+1] = {true, ERROR_SYMBOL};
+                    cable[i+1] = {true, CONFLICT_SYMBOl};
                 } catch (exception e) {}
             } else if (cable[i].symbol != EMPTY_SYMBOL && !cable[i].changed) {
                 try {
