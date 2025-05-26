@@ -54,11 +54,11 @@ void cablePropagation() {
     }
     for (int i = 0; i < CABLE_SIZE; i++) {
         if (cable[i].symbol != EMPTY_SYMBOL) {
-            if(cable[i].left_propagatoin && i > 0){
-                if(cable[i-1].symbol != EMPTY_SYMBOL && cable[i-1].right_propagatoin) {
+            if(cable[i].left_propagation && i > 0){
+                if(cable[i-1].symbol != EMPTY_SYMBOL && cable[i-1].right_propagation) {
                     newCable[i-1].symbol = CONFLICT_SYMBOL;
                     newCable[i-1].changed = true;
-                    newCable[i-1].left_propagatoin = true;
+                    newCable[i-1].left_propagation = true;
                     newCable[i-1].distorted = true;
                 } else {
                     if(newCable[i-1].symbol != EMPTY_SYMBOL) {
@@ -66,15 +66,15 @@ void cablePropagation() {
                     } else {
                         newCable[i-1].symbol = cable[i].symbol;
                     }
-                    newCable[i-1].left_propagatoin = true;
+                    newCable[i-1].left_propagation = true;
                     newCable[i-1].changed = true;
                 }
             }
-            if(cable[i].right_propagatoin && i < CABLE_SIZE - 1){
-                if(cable[i+1].symbol != EMPTY_SYMBOL && cable[i+1].left_propagatoin) {
+            if(cable[i].right_propagation && i < CABLE_SIZE - 1){
+                if(cable[i+1].symbol != EMPTY_SYMBOL && cable[i+1].left_propagation) {
                     newCable[i+1].symbol = CONFLICT_SYMBOL;
                     newCable[i+1].changed = true;
-                    newCable[i+1].right_propagatoin = true;
+                    newCable[i+1].right_propagation = true;
                     newCable[i+1].distorted = true;
                 } else {
                     if(newCable[i+1].symbol != EMPTY_SYMBOL) {
@@ -82,15 +82,15 @@ void cablePropagation() {
                     } else {
                         newCable[i+1].symbol = cable[i].symbol;
                     }
-                    newCable[i+1].right_propagatoin = true;
+                    newCable[i+1].right_propagation = true;
                     newCable[i+1].changed = true;
                 }
             }
             if(i+1 == CABLE_SIZE) {
-                newCable[i].right_propagatoin = false;
+                newCable[i].right_propagation = false;
             }
             if(i == 0) {
-                newCable[i].left_propagatoin = false;
+                newCable[i].left_propagation = false;
             }
         }
     }

@@ -12,8 +12,8 @@ const char EMPTY_SYMBOL = '-';
 const char CONFLICT_SYMBOL = '#';
 
 struct cablePart {
-    bool right_propagatoin;
-    bool left_propagatoin;
+    bool right_propagation;
+    bool left_propagation;
     bool distorted;
     bool changed;
     char symbol;

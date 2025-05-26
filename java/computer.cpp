@@ -5,8 +5,8 @@
 
 void sendSignal(computer c) {
     cable[c.position].symbol = c.symbol;
-    cable[c.position].left_propagatoin = true;
-    cable[c.position].right_propagatoin = true;
+    cable[c.position].left_propagation = true;
+    cable[c.position].right_propagation = true;
 }
 
 void computerBehaviour(int time) {

@@ -17,15 +17,15 @@ int main() {
     createMatrix();
     initSavefile("./test.txt");
 
-    // cable[2].left_propagatoin = true;
+    // cable[2].left_propagation = true;
     // cable[2].symbol = 'A';
     // cable[2].changed = true;
-    // cable[2].right_propagatoin = true;
+    // cable[2].right_propagation = true;
 
     // cable[19].symbol = 'B';
-    // cable[19].left_propagatoin = true;
+    // cable[19].left_propagation = true;
     // cable[19].changed = true;
-    // cable[19].right_propagatoin = true;
+    // cable[19].right_propagation = true;
 
     for (int second = 0; second < TIME; second++) {
         this_thread::sleep_for(chrono::milliseconds(500));
