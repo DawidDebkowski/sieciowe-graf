@@ -11,7 +11,6 @@ ofstream saveFile;
 void initCable() {
     for(int i=0;i<CABLE_SIZE;i++) {
         cable[i] = {false, false, false, false, EMPTY_SYMBOL};
-        // computers[i] = {-1, ' '};
     }
 }
 
@@ -24,17 +23,29 @@ void printCable() {
     cout << "|";
     cout << endl << ' ';
     for(int i=0;i<CABLE_SIZE;i++) {
-        if(computers[i].symbol != ' ') {
+        if(printableComputers[i].symbol != ' ') {
             cout << '|';
         } else cout << ' ';
     }
     cout << endl << ' ';
     for(int i=0;i<CABLE_SIZE;i++) {
-        cout << computers[i].symbol;
+        cout << printableComputers[i].symbol;
     }
     cout << endl;
 }
 
+// tworzy cudowną tablice komputerów do wypisywania
+void createPrintableComputers() {
+    for(int i=0;i<CABLE_SIZE;i++) {
+        printableComputers[i] = computer{i, i, ' '};
+    }
+
+    for(int i=0;i<PC_NUMBER;i++) {
+        printableComputers[computers[i].position] = computers[i];
+    }
+}
+
+// do wywołania tylko po ustawieniu komputerów
 void initSavefile(string filepath) {
     saveFile = ofstream(filepath);
     if (saveFile.is_open()) {

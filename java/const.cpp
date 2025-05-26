@@ -6,7 +6,7 @@
 using namespace std;
 
 const int CABLE_SIZE = 20;
-const int PC_NUMBER = 3;
+const int PC_NUMBER = 2;
 
 const char EMPTY_SYMBOL = '-';
 const char CONFLICT_SYMBOL = '#';
@@ -19,6 +19,7 @@ struct cablePart {
     char symbol;
 };
 
+// {id, position, symbol, timer= -1 }
 struct computer {
     int id;
     int position;
@@ -28,6 +29,7 @@ struct computer {
 
 cablePart cable[CABLE_SIZE];
 computer computers[PC_NUMBER];
+computer printableComputers[CABLE_SIZE]; // do ładnego wypisywania
 
 const int TIME = 30;
 
