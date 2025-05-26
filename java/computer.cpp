@@ -12,13 +12,9 @@ void sendSignal(computer c) {
 void computerBehaviour(int time) {
     for(int i=0;i<PC_NUMBER;i++) {
         for (Signal s : matrix) {
-            if (s.computer == i) { 
-                if(s.time == time) {
+            if (s.computer == i) {
+                if(time >= s.time && time < s.time + s.size) {
                     sendSignal(computers[i]);
-                }
-
-                if (time - s.size >= s.time) {
-                    
                 }
             }
         }
