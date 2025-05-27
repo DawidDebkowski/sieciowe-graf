@@ -3,8 +3,8 @@
 
 #include "const.cpp"
 
-void sendSignal(computer c) {
-    cable[c.position].symbol = c.symbol;
+void sendSignal(computer c, char KOMUNIKAT) {
+    cable[c.position].symbol = KOMUNIKAT;
     cable[c.position].left_propagation = true;
     cable[c.position].right_propagation = true;
 }
@@ -14,7 +14,7 @@ void computerBehaviour(int time) {
         for (Signal s : matrix) {
             if (s.computer == i) {
                 if(time >= s.time && time < s.time + s.size) {
-                    sendSignal(computers[i]);
+                    sendSignal(computers[i], s.KOMUNIKAT);
                 }
             }
         }

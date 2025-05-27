@@ -37,13 +37,14 @@ struct Signal {
     int computer;
     int time;
     int size;
+    char KOMUNIKAT;
 };
 
 vector<Signal> matrix;
 
 void createMatrix() {
-    matrix.push_back(Signal{0, 0, 2});
-    matrix.push_back(Signal{1, 2, 4});
+    matrix.push_back(Signal{0, 0, 2, 'a'});
+    matrix.push_back(Signal{1, 2, 4, 'b'});
 }
 
 #endif
