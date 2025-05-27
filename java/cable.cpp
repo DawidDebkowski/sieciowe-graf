@@ -31,6 +31,10 @@ void printCable() {
     for(int i=0;i<CABLE_SIZE;i++) {
         cout << printableComputers[i].symbol;
     }
+    cout << endl << ' ';
+    for(int i=0;i<CABLE_SIZE;i++) {
+        cout << (printableComputers[i].jam ? "j" : " ");
+    }
     cout << endl;
 }
 

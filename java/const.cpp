@@ -36,7 +36,7 @@ cablePart cable[CABLE_SIZE];
 computer computers[PC_NUMBER];
 computer printableComputers[CABLE_SIZE]; // do ładnego wypisywania
 
-const int TIME = 100;
+const int TIME = 1000;
 
 struct Signal {
     int computer;

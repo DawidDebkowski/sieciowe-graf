@@ -16,12 +16,12 @@ int collisionBreak[PC_NUMBER] = {0};
 Signal lastSent[PC_NUMBER];
 
 void computerBehaviour(int time) {
-    for(computer c : computers) {
+    for(computer& c : computers) {
+        cout << c.symbol << " " << c.prev << " " << cable[c.position].symbol << "\n";
         if (c.prev == CONFLICT_SYMBOL && cable[c.position].symbol != CONFLICT_SYMBOL) {
             c.jam = true;
-            sendSignal(computers[c.id], JAM_SYMBOL);
+            // sendSignal(computers[c.id], JAM_SYMBOL);
             c.tries++;
-
         }
         // if (cable[c.position].symbol == CONFLICT_SYMBOL) {
         //     c.jam = true;
