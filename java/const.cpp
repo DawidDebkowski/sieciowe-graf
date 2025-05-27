@@ -10,6 +10,7 @@ const int PC_NUMBER = 2;
 
 const char EMPTY_SYMBOL = '-';
 const char CONFLICT_SYMBOL = '#';
+const char JAM_SYMBOL = '!';
 
 struct cablePart {
     bool right_propagation;
@@ -24,15 +25,17 @@ struct computer {
     int id;
     int position;
     char symbol;
+    char jamSymbol;
     int timer = -1;
     bool jam = false;
+    int tries = 0;
 };
 
 cablePart cable[CABLE_SIZE];
 computer computers[PC_NUMBER];
 computer printableComputers[CABLE_SIZE]; // do ładnego wypisywania
 
-const int TIME = 30;
+const int TIME = 100;
 
 struct Signal {
     int computer;
