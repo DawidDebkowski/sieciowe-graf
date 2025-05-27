@@ -9,24 +9,27 @@ void sendSignal(computer c, char KOMUNIKAT) {
     cable[c.position].right_propagation = true;
 }
 
+int collisionBreak[PC_NUMBER] = {0};
+
 void computerBehaviour(int time) {
-    for(int i=0;i<PC_NUMBER;i++) {
-        for (Signal s : matrix) {
-            if (s.computer == i) {
-                if(time >= s.time && time < s.time + s.size) {
-                    sendSignal(computers[i], s.KOMUNIKAT);
+    for(computer c : computers) {
+        if (cable[c.position].symbol == CONFLICT_SYMBOL) {
+            c.jam = true;
+        }
+
+        if (c.jam) {
+            
+            collisionBreak[c.id]++;
+        } else {
+            for (Signal s : matrix) {
+                if (s.computer == c.id) {
+                    if(time - collisionBreak[c.id] >= s.time && time - collisionBreak[c.id] < s.time + s.size) {
+                        sendSignal(computers[c.id], s.KOMUNIKAT);
+                    }
                 }
             }
         }
     }
 }
-// csmacd
-// if(cable[computers[i].id].symbol == CONFLICT_SYMBOL) {
-//     // losujemy czekanie
-//     // przestajemy nadawac
-//     // robimy jam behaviour
-// }
-// if(computers[i].timer > 0) {
-//             computers[i].timer--;
-//         } else if( == 0)
+
 #endif

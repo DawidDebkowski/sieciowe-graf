@@ -25,6 +25,7 @@ struct computer {
     int position;
     char symbol;
     int timer = -1;
+    bool jam = false;
 };
 
 cablePart cable[CABLE_SIZE];
