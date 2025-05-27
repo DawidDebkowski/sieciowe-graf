@@ -48,8 +48,8 @@ struct Signal {
 vector<Signal> matrix;
 
 void createMatrix() {
-    matrix.push_back(Signal{0, 0, 2, 'a'});
-    matrix.push_back(Signal{1, 2, 4, 'b'});
+    matrix.push_back(Signal{0, 0, CABLE_SIZE*2, 'a'});
+    matrix.push_back(Signal{1, 2, CABLE_SIZE*2, 'b'});
 }
 
 #endif
