@@ -17,13 +17,19 @@ Signal lastSent[PC_NUMBER];
 
 void computerBehaviour(int time) {
     for(computer c : computers) {
-        if (cable[c.position].symbol == CONFLICT_SYMBOL) {
+        if (c.prev == CONFLICT_SYMBOL && cable[c.position].symbol != CONFLICT_SYMBOL) {
             c.jam = true;
-        }
-        if(cable[c.position].symbol == EMPTY_SYMBOL && c.jam){
             sendSignal(computers[c.id], JAM_SYMBOL);
             c.tries++;
+
         }
+        // if (cable[c.position].symbol == CONFLICT_SYMBOL) {
+        //     c.jam = true;
+        // }
+        // if(cable[c.position].symbol == EMPTY_SYMBOL && c.jam){
+        //     sendSignal(computers[c.id], JAM_SYMBOL);
+        //     c.tries++;
+        // }
 
         if (c.jam) {
             if (c.timer == -1) {
@@ -54,6 +60,8 @@ void computerBehaviour(int time) {
                 }
             }
         }
+
+        c.prev = cable[c.position].symbol;
     }
 }
 

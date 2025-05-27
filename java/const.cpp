@@ -29,6 +29,7 @@ struct computer {
     int timer = -1;
     bool jam = false;
     int tries = 0;
+    char prev = EMPTY_SYMBOL;
 };
 
 cablePart cable[CABLE_SIZE];
