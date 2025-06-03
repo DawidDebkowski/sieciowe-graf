@@ -38,11 +38,11 @@ void printCable() {
         for(int j=0;j<PC_NUMBER;j++) {
             if(computers[j].position == i) {
                 didPrint = true;
-                if(computers[j].jam) {
-                    cout << computers[j].timer << " " << computers[j].tries;
+                if(computers[j].backoffCounter) {
+                    cout << computers[j].backoffCounter << " " << computers[j].tries;
                 } else {
-                    cout << computers[j].prev;
-                    if(computers[j].timer < 10) cout << " ";
+                    cout << computers[j].backoffCounter;
+                    if(computers[j].backoffCounter < 10) cout << " ";
                 }
             }
         }
