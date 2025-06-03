@@ -30,11 +30,11 @@ int main() {
     // cable[19].right_propagation = true;
 
     for (int second = 0; second < TIME; second++) {
-        this_thread::sleep_for(chrono::milliseconds(200));
+        // this_thread::sleep_for(chrono::milliseconds(200));
 
         cablePropagation();
         computerBehaviour(second);
-        printCable();
+        // printCable();
         saveCable();
     }
 

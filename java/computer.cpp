@@ -17,24 +17,16 @@ Signal lastSent[PC_NUMBER];
 
 void computerBehaviour(int time) {
     for(computer& c : computers) {
-        cout << c.symbol << " " << c.prev << " " << cable[c.position].symbol << "\n";
+        // cout << c.symbol << " " << c.prev << " " << cable[c.position].symbol << "\n";
         if (c.prev == CONFLICT_SYMBOL && cable[c.position].symbol != CONFLICT_SYMBOL) {
             c.jam = true;
-            // sendSignal(computers[c.id], JAM_SYMBOL);
             c.tries++;
         }
-        // if (cable[c.position].symbol == CONFLICT_SYMBOL) {
-        //     c.jam = true;
-        // }
-        // if(cable[c.position].symbol == EMPTY_SYMBOL && c.jam){
-        //     sendSignal(computers[c.id], JAM_SYMBOL);
-        //     c.tries++;
-        // }
 
         if (c.jam) {
             if (c.timer == -1) {
                 uniform_int_distribution<> dis(1, int (pow(2, c.tries)));
-                c.timer = dis(gen) * CABLE_SIZE;
+                c.timer = dis(gen) * 2*CABLE_SIZE;
             } else {
                 if (c.timer == 0) {
                     if (lastSent[c.id].size != 0) {
