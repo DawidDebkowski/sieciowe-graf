@@ -12,11 +12,14 @@ using namespace std;
 int main() {
     initCable();
     computers[0] = {0, 1, 'A'};
-    computers[1] = {1, 25, 'B'};
+    computers[1] = {1, 39, 'B'};
+    computers[2] = {2, 28, 'C'};
+    computers[3] = {3, 19, 'X'};
+    computers[4] = {4, 20, 'D'};
     createMatrix();
     createPrintableComputers();
     initSavefile("./test.txt");
-    printCable();
+    printCable(0);
     saveCable();
 
     // cable[2].left_propagation = true;
@@ -30,11 +33,11 @@ int main() {
     // cable[19].right_propagation = true;
 
     for (int second = 0; second < TIME; second++) {
-        this_thread::sleep_for(chrono::milliseconds(50));
+        this_thread::sleep_for(chrono::milliseconds(10));
 
         cablePropagation();
         computerBehaviour(second);
-        printCable();
+        printCable(second);
         saveCable();
     }
 
