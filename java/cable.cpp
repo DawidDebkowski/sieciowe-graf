@@ -32,9 +32,25 @@ void printCable() {
         cout << printableComputers[i].symbol;
     }
     cout << endl << ' ';
+    bool didPrint = false;
     for(int i=0;i<CABLE_SIZE;i++) {
-        cout << (printableComputers[i].jam ? "j" : " ");
+        didPrint = false;
+        for(int j=0;j<PC_NUMBER;j++) {
+            if(computers[j].position == i) {
+                didPrint = true;
+                if(computers[j].jam) {
+                    cout << computers[j].timer << " " << computers[j].tries;
+                } else {
+                    cout << computers[j].prev;
+                    if(computers[j].timer < 10) cout << " ";
+                }
+            }
+        }
+        if(!didPrint) cout << " ";
     }
+    cout << endl;
+    cout << endl;
+    cout << "komputer jeżeli jest .jam to ma \"timer tires\"";
     cout << endl;
 }
 

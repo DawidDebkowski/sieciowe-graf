@@ -15,6 +15,16 @@ void sendSignal(computer c, char KOMUNIKAT) {
 int collisionBreak[PC_NUMBER] = {0};
 Signal lastSent[PC_NUMBER];
 
+
+/*
+Po pierwsze, jak będzie JAM po raz drugi to zepsuliśmy już size naszego sygnału!
+Po drugie previous nie działa najlepiej
+Po trzecie tries też nie działa najlepiej
+
+Dużo podstawowych błędów które nie wiem jak naprawić, myślę, że trzeba wejść na miro i rozpisać diagram zachowania
+komputera i tyle, a potem to zakodować nie ma innej opcji
+*/
+
 void computerBehaviour(int time) {
     for(computer& c : computers) {
         // cout << c.symbol << " " << c.prev << " " << cable[c.position].symbol << "\n";
@@ -22,11 +32,18 @@ void computerBehaviour(int time) {
             c.jam = true;
             c.tries++;
         }
+        // if (cable[c.position].symbol == CONFLICT_SYMBOL) {
+        //     c.jam = true;
+        // }
+        // if(cable[c.position].symbol == EMPTY_SYMBOL && c.jam){
+        //     sendSignal(computers[c.id], JAM_SYMBOL);
+        //     c.tries++;
+        // }
 
         if (c.jam) {
             if (c.timer == -1) {
                 uniform_int_distribution<> dis(1, int (pow(2, c.tries)));
-                c.timer = dis(gen) * 2*CABLE_SIZE;
+                c.timer = dis(gen) * CABLE_SIZE;
             } else {
                 if (c.timer == 0) {
                     if (lastSent[c.id].size != 0) {
@@ -53,7 +70,6 @@ void computerBehaviour(int time) {
             }
         }
 
-        c.prev = cable[c.position].symbol;
     }
 }
 
