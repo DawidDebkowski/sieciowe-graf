@@ -6,7 +6,7 @@
 using namespace std;
 
 const int CABLE_SIZE = 40;
-const int PC_NUMBER = 2;
+const int PC_NUMBER = 5;
 
 const char EMPTY_SYMBOL = '-';
 const char CONFLICT_SYMBOL = '#';
@@ -49,7 +49,7 @@ cablePart cable[CABLE_SIZE];
 computer computers[PC_NUMBER];
 computer printableComputers[CABLE_SIZE]; // do ładnego wypisywania
 
-const int TIME = 1000;
+const int TIME = 10000;
 
 struct Signal {
     int computer;
@@ -63,8 +63,17 @@ vector<Signal> matrix;
 
 void createMatrix() {
     matrix.push_back(Signal{0, 0, 2*CABLE_SIZE, 'a', false});
+    matrix.push_back(Signal{0, 900, 2*CABLE_SIZE, 'a', false});
     matrix.push_back(Signal{1, 10, 2*CABLE_SIZE, 'b', false});
     matrix.push_back(Signal{1, 300, 2*CABLE_SIZE, 'b', false});
+    matrix.push_back(Signal{1, 1500, 2*CABLE_SIZE, 'b', false});
+    matrix.push_back(Signal{2, 100, 2*CABLE_SIZE, 'c', false});
+    matrix.push_back(Signal{2, 700, 2*CABLE_SIZE, 'c', false});
+    matrix.push_back(Signal{2, 200, 2*CABLE_SIZE, 'c', false});
+    matrix.push_back(Signal{2, 1500, 2*CABLE_SIZE, 'c', false});
+    matrix.push_back(Signal{3, 500, 2*CABLE_SIZE, 'x', false});
+    matrix.push_back(Signal{3, 400, 2*CABLE_SIZE, 'x', false});
+    matrix.push_back(Signal{4, 700, 2*CABLE_SIZE, 'd', false});
     // Example of more signals:
     // matrix.push_back(Signal{0, 20, CABLE_SIZE, 'x', false});
     // matrix.push_back(Signal{1, 25, CABLE_SIZE, 'y', false});

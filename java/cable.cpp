@@ -14,7 +14,7 @@ void initCable() {
     }
 }
 
-void printCable() {
+void printCable(int second) {
     cout << "\033[2J\033[1;1H";
     cout << "|";
     for(int i=0;i<CABLE_SIZE;i++) {
@@ -50,7 +50,15 @@ void printCable() {
     }
     cout << endl;
     cout << endl;
-    cout << "komputer jeżeli jest .jam to ma \"timer tires\"";
+    cout << "time: " << second << endl;
+    // cout << "komputer jeżeli jest .jam to ma \"timer tires\"";
+    int completed = 0;
+    int next = 0;
+    for(int i =0;i < matrix.size(); i++) {
+        completed += matrix[i].completed;
+        next = max(next, matrix[i].time);
+    }
+    cout << "Signals successfully sent: " << completed << "/" << matrix.size() << " Next: " << next;
     cout << endl;
 }
 
