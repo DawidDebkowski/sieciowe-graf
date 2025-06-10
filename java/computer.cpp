@@ -10,7 +10,7 @@ void sendSignal(computer c, char KOMUNIKAT) {
     cable[c.position].symbol = KOMUNIKAT;
     cable[c.position].left_propagation = true;
     cable[c.position].right_propagation = true;
-    cable[c.position].changed = true; // Ensure change is noted for propagation
+    cable[c.position].changed = true;
 }
 
 void computerBehaviour(int time) {
@@ -51,7 +51,7 @@ void computerBehaviour(int time) {
 
         // wybór wiadomości
         if (c.currentSignalMatrixIndex == -1) {
-            for (int sigIdx = 0; sigIdx < matrix.size(); ++sigIdx) {
+            for (int sigIdx = 0; sigIdx < matrix.size(); sigIdx++) {
                 if (matrix[sigIdx].computer == c.id && time >= matrix[sigIdx].time && !matrix[sigIdx].completed) {
                     // ustawienie wybranego sygnalu
                     c.currentSignalMatrixIndex = sigIdx;
@@ -90,6 +90,7 @@ void computerBehaviour(int time) {
 
             // zakonczono wysylanie
             if (c.framesSentCount >= c.messageSize) {
+                matrix[c.currentSignalMatrixIndex].completed = true;
                 c.isTransmitting = false;
                 c.framesSentCount = 0;
                 c.tries = 0;

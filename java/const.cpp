@@ -12,9 +12,9 @@ const char EMPTY_SYMBOL = '-';
 const char CONFLICT_SYMBOL = '#';
 const char JAM_SYMBOL = '!';
 
-// CSMA/CD Constants
+// CSMA/CD
 const int MAX_RETRIES = 15;
-const int JAM_SIGNAL_TICKS = CABLE_SIZE; // Duration of JAM signal in ticks
+const int JAM_SIGNAL_TICKS = CABLE_SIZE; // dlugosc jam
 
 struct cablePart {
     bool right_propagation;
@@ -24,13 +24,12 @@ struct cablePart {
     char symbol;
 };
 
-// {id, position, symbol, timer= -1 }
 struct computer {
     int id;
     int position;
-    char symbol; // Display symbol for computer
+    char symbol;
 
-    // CSMA/CD state
+    // CSMA/CD 
     int tries = 0;
     int backoffCounter = 0;   // If > 0, in backoff state
     int jamSendCounter = 0;   // If > 0, sending JAM signal
@@ -71,12 +70,9 @@ void createMatrix() {
     matrix.push_back(Signal{2, 700, 2*CABLE_SIZE, 'c', false});
     matrix.push_back(Signal{2, 200, 2*CABLE_SIZE, 'c', false});
     matrix.push_back(Signal{2, 1500, 2*CABLE_SIZE, 'c', false});
-    matrix.push_back(Signal{3, 500, 2*CABLE_SIZE, 'x', false});
-    matrix.push_back(Signal{3, 400, 2*CABLE_SIZE, 'x', false});
-    matrix.push_back(Signal{4, 700, 2*CABLE_SIZE, 'd', false});
-    // Example of more signals:
-    // matrix.push_back(Signal{0, 20, CABLE_SIZE, 'x', false});
-    // matrix.push_back(Signal{1, 25, CABLE_SIZE, 'y', false});
+    matrix.push_back(Signal{3, 500, 2*CABLE_SIZE, 'd', false});
+    matrix.push_back(Signal{3, 400, 2*CABLE_SIZE, 'd', false});
+    matrix.push_back(Signal{4, 700, 2*CABLE_SIZE, 'e', false});
 }
 
 #endif
