@@ -139,11 +139,13 @@ def simulate_transmission_error(message, error_rate=0.001):
 
 if __name__ == "__main__":
     # Number of bytes per frame (excluding CRC, headers)
-    bytes_in_frames = 4
-    bits_in_frame = bytes_in_frames * 8
+    # bytes_in_frames = 12
+    bits_in_frame = 96
     
     # Process the message to be sent
-    original_message = 'Ide mlody genialny trzymam but w butonierce tym co za mna nie zdarzxa cichopowiem Adieu!'
+
+    # original_message = 'mam az 16 znakow123456789123456mam az 16 znakow123456789123456'
+    original_message = 'W parkocieniu krokietni - jakis meeting panienski. Dyskutuja o sztuce, objawiajac swoj traf. One jeszcze nie wiedza, ze, gdy nastal Jasienski, Bezpowrotnie umarli i Tetmajer i Staff. One jeszcze nie wiedza, one jeszcze nie wierza. Poezyjnosc, futuryzm - niewiadoma i X. Chodzmy biegac, panienki, niech sie glowki oswieza, - Bedzie lepiej smakowac poobiedni jour-fixe.'
     process_message(original_message, bits_in_frame)
     
     # Simulate transmission errors

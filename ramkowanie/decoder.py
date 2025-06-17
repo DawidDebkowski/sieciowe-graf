@@ -106,8 +106,9 @@ def process_received_message():
             
             if error_frames > 0:
                 print(f"\nWARNING: {error_frames} frames had errors and were skipped")
-            
-            print(f"\nFinal decoded message: '{decoded_message}'")
+            print(f'There are {len(frames)-error_frames} correct frames')
+
+            # print(f"\nFinal decoded message: '{decoded_message}'")
             return decoded_message
             
     except FileNotFoundError:
@@ -117,4 +118,4 @@ def process_received_message():
 if __name__ == "__main__":
     received_message = process_received_message()
 
-    print(f"Received: '{received_message}'")
+    # print(f"Received             : '{received_message}'")

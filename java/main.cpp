@@ -12,11 +12,11 @@ using namespace std;
 int main() {
     initCable();
 
-    computers[0] = {0, 1, 'A'};
-    computers[1] = {1, 39, 'B'};
-    computers[2] = {2, 28, 'C'};
-    computers[3] = {3, 19, 'D'};
-    computers[4] = {4, 20, 'E'};
+    computers[0] = {0, 7, 'A'};
+    computers[1] = {1, 20, 'B'};
+    computers[2] = {2, 50, 'C'};
+    // computers[3] = {3, 19, 'D'};
+    // computers[4] = {4, 20, 'E'};
 
     createMatrix();
     createPrintableComputers();
@@ -25,7 +25,7 @@ int main() {
     saveCable();
 
     for (int second = 0; second < TIME; second++) {
-        this_thread::sleep_for(chrono::milliseconds(10));
+        // this_thread::sleep_for(chrono::milliseconds(10));
 
         cablePropagation();
         computerBehaviour(second);
